@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 
 namespace SqlIntro
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly string _connectionString;
 
@@ -28,9 +28,7 @@ namespace SqlIntro
             {
                 conn.Open();
                 var cmd = conn.CreateCommand();
-                //TODO:  Write a SELECT statement that gets all products
-                cmd.CommandText = "SELECT * FROM product";
-                
+                cmd.CommandText = "SELECT ProductID as ID, Name from product;";
                 var dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -45,10 +43,12 @@ namespace SqlIntro
         /// <param name="id"></param>
         public void DeleteProduct(int id)
         {
+            
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "DELETE into product (id) values (@id)";
+                cmd.CommandText = "DELETE from product where productID = @id";
+                cmd.Parameters.AddWithValue("@id", id);
                 //Write a delete statement that deletes by id
                 cmd.ExecuteNonQuery();
             }
@@ -64,7 +64,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "update product set name = @name where id = @id";
+                cmd.CommandText = "UPDATE product set name = @name where id = @id";
                 cmd.Parameters.AddWithValue("@name", prod.Name);
                 cmd.Parameters.AddWithValue("@id", prod.Id);
                 cmd.ExecuteNonQuery();
