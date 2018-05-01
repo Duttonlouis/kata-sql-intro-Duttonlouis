@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dapper;
 using MySql.Data.MySqlClient;
+using Linq;
 
 namespace SqlIntro
 {
@@ -39,13 +40,45 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("UPDATE product set name = @name where id = @id", new { prod });
+                conn.Execute("INSERT product set name = @name where id = @id", new { prod });
             }
         }
 
         public void UpdateProduct(Product prod)
         {
-            throw new NotImplementedException();
+            using (var conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                conn.Execute("UPDATE product set name = @name where id = @id", new { prod });
+            }
         }
+        public void GetProductsWithReview(Product prod)
+        {
+            using (var conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                /*var sql = "SELECT * FROM Products AS A INNER JOIN ProductsReview AS B ON A.ReviewID = B.ReviewID;";
+                var review = conn.Query<Product, ProductReview, Product>(sql, (review, ProductReview) =>
+                {
+                    review.ProductReview = productreview;
+                    return review;
+                }
+
+                    , splitOn: "ReviewID").Distinct().ToList();*/
+                var sql = " SELECT p.Name, pr.Comments FROM product as p INNER JOIN productreview AS pr on p.ProductID = pr.ProductId;";
+
+           
+
+            }
+        }
+        public void GetProductsAndReviews(Product prod)
+        {
+            using (var conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                conn.Execute("SELECT * FROM product LEFT JOIN name = @name where id = @id", new { prod });
+            }
+        }
+
     }
 }

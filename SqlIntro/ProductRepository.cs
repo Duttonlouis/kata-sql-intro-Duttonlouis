@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 
 namespace SqlIntro
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository //: IProductRepository
     {
         private readonly string _connectionString;
 

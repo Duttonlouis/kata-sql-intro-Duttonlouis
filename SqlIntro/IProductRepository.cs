@@ -10,5 +10,7 @@ namespace SqlIntro
         void DeleteProduct(int id);
         void UpdateProduct(Product prod);
         void InsertProduct(Product prod);
+        void GetProductsWithReview(Product prod);
+        void GetProductsAndReviews(Product prod);
     }
 }
