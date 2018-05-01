@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dapper;
 using MySql.Data.MySqlClient;
-using Linq;
+using System.Linq;
 
 namespace SqlIntro
 {
@@ -52,7 +52,7 @@ namespace SqlIntro
                 conn.Execute("UPDATE product set name = @name where id = @id", new { prod });
             }
         }
-        public void GetProductsWithReview(Product prod)
+        public IEnumerable<Product>GetProductsWithReview()
         {
             using (var conn = new MySqlConnection(_connectionString))
             {
@@ -65,18 +65,23 @@ namespace SqlIntro
                 }
 
                     , splitOn: "ReviewID").Distinct().ToList();*/
-                var sql = " SELECT p.Name, pr.Comments FROM product as p INNER JOIN productreview AS pr on p.ProductID = pr.ProductId;";
+                var sql = "SELECT p.Name, pr.Comments FROM product as p INNER JOIN productreview AS pr on p.ProductID = pr.ProductId;";
+                return conn.Query<Product>(sql);
 
            
 
             }
         }
-        public void GetProductsAndReviews(Product prod)
+        public IEnumerable<Product>GetProductsAndReviews()
+
         {
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("SELECT * FROM product LEFT JOIN name = @name where id = @id", new { prod });
+                return conn.Query<Product>("SELECT p.Name, pr.Comments FROM product as p LEFT JOIN productreview AS pr on p.ProductID = pr.ProductId;");
+
+
+
             }
         }
 

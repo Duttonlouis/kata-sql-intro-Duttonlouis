@@ -7,11 +7,11 @@ namespace SqlIntro
         static void Main(string[] args)
         {
             var connectionString = "Server=localhost;Database=adventureworks;Uid=root;Pwd=passwordtruecoder;";
-            var repo = new ProductRepository(connectionString);
+            var repo = new DapperProductRepo(connectionString);
 
-            foreach (var prod in repo.GetProducts())
+            foreach (var prod in repo.GetProductsWithReview())
             {
-                Console.WriteLine("Product Name:" + prod.Name);
+                Console.WriteLine("\n\n\n\nProduct Name:" + prod.Name + "\n\t\tComments:" +prod.Comments);
             }
 
             //repo.DeleteProduct(324);
