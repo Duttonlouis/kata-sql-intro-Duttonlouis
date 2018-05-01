@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 
 namespace SqlIntro
 {
-    public class ProductRepository //: IProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly string _connectionString;
 
@@ -22,7 +22,7 @@ namespace SqlIntro
         /// Reads all the products from the products table
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Product> GetProducts()
+        public IEnumerable<Product>GetProducts()
         {
             using (var conn = new MySqlConnection(_connectionString))
             {
@@ -84,5 +84,36 @@ namespace SqlIntro
                 cmd.ExecuteNonQuery();
             }
         }
+        public IEnumerable<Product>GetProductsWithReview()
+        {
+            using (var conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT p.Name, pr.Comments FROM product as p INNER JOIN productreview AS pr on p.ProductID = pr.ProductId;";
+                var dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    yield return new Product { Name = dr["Name"].ToString(), Comments = dr["Comments"].ToString() };
+
+                    //yield return new Product { Comments = dr["Comments"].ToString() };
+                }
+            }
+        }
+        public IEnumerable<Product> GetProductsAndReviews()
+        {
+            using (var conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT p.Name, pr.Comments FROM product as p LEFT JOIN productreview AS pr on p.ProductID = pr.ProductId;";
+                var dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    yield return new Product { Name = dr["Name"].ToString(), Comments = dr["Comments"].ToString() };
+
+                }
+            }
+        }  
     }
 }
