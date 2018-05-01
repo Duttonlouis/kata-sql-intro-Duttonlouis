@@ -57,19 +57,8 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                /*var sql = "SELECT * FROM Products AS A INNER JOIN ProductsReview AS B ON A.ReviewID = B.ReviewID;";
-                var review = conn.Query<Product, ProductReview, Product>(sql, (review, ProductReview) =>
-                {
-                    review.ProductReview = productreview;
-                    return review;
-                }
-
-                    , splitOn: "ReviewID").Distinct().ToList();*/
                 var sql = "SELECT p.Name, pr.Comments FROM product as p INNER JOIN productreview AS pr on p.ProductID = pr.ProductId;";
                 return conn.Query<Product>(sql);
-
-           
-
             }
         }
         public IEnumerable<Product>GetProductsAndReviews()
@@ -79,9 +68,6 @@ namespace SqlIntro
             {
                 conn.Open();
                 return conn.Query<Product>("SELECT p.Name, pr.Comments FROM product as p LEFT JOIN productreview AS pr on p.ProductID = pr.ProductId;");
-
-
-
             }
         }
 

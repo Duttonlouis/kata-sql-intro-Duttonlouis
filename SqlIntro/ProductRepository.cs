@@ -22,7 +22,7 @@ namespace SqlIntro
         /// Reads all the products from the products table
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Product>GetProducts()
+        public IEnumerable<Product> GetProducts()
         {
             using (var conn = new MySqlConnection(_connectionString))
             {
@@ -43,7 +43,7 @@ namespace SqlIntro
         /// <param name="id"></param>
         public void DeleteProduct(int id)
         {
-            
+
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var cmd = conn.CreateCommand();
@@ -84,7 +84,7 @@ namespace SqlIntro
                 cmd.ExecuteNonQuery();
             }
         }
-        public IEnumerable<Product>GetProductsWithReview()
+        public IEnumerable<Product> GetProductsWithReview()
         {
             using (var conn = new MySqlConnection(_connectionString))
             {
@@ -95,8 +95,6 @@ namespace SqlIntro
                 while (dr.Read())
                 {
                     yield return new Product { Name = dr["Name"].ToString(), Comments = dr["Comments"].ToString() };
-
-                    //yield return new Product { Comments = dr["Comments"].ToString() };
                 }
             }
         }
@@ -111,9 +109,8 @@ namespace SqlIntro
                 while (dr.Read())
                 {
                     yield return new Product { Name = dr["Name"].ToString(), Comments = dr["Comments"].ToString() };
-
                 }
             }
-        }  
+        }
     }
 }
