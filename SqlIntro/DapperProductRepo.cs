@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Dapper;
 using MySql.Data.MySqlClient;
-using System.Linq;
 
 namespace SqlIntro
 {
-    
+
     public class DapperProductRepo : IProductRepository
     {
         private readonly string _connectionString;
