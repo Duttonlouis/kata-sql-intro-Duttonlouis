@@ -37,7 +37,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("INSERT product set name = @name where id = @id", new { prod });
+                conn.Execute("NSERT INTO product (Name) VALUES (@name);", new { name = prod.Name });
             }
         }
 
@@ -46,7 +46,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("UPDATE product set name = @name where id = @id", new { prod });
+                conn.Execute("UPDATE product SET name = @name WHERE Productid = @id", prod );
             }
         }
         public IEnumerable<Product>GetProductsWithReview()
@@ -64,7 +64,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                return conn.Query<Product>("SELECT p.Name, pr.Comments FROM product as p LEFT JOIN productreview AS pr on p.ProductID = pr.ProductId;");
+                return conn.Query<Product>("SELECT p.Name, pr.Comments FROM product as p LEFT JOIN productreview AS pr on p.ProductId = pr.ProductId;");
             }
         }
 
